@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/services/auth_service.dart';
+import 'package:flutter_projects/ui/authentication.dart';
 import 'package:flutter_projects/ui/news_page.dart';
 import 'package:flutter_projects/ui/signup_page.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,14 @@ class _HomeState extends State<Home> {
   }
 }
 
-  class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fUser = context.watch<User>();
     if (fUser != null) {
       return NewsPage();
+    } else {
+      return Authentication();
     }
-    return SignUp();
   }
 }

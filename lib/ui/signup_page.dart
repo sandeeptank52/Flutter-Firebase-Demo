@@ -3,6 +3,10 @@ import 'package:flutter_projects/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
+  final Function updateViews;
+
+  SignUp({this.updateViews});
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -11,90 +15,40 @@ class _SignUpState extends State<SignUp> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          alignment: Alignment.center,
-          child: Container(
-            child: Column(
-              children: [
-                Container(
+          child: Column(
+            children: [
+              Container(
                   margin: EdgeInsets.only(top: 40.0),
-                  child: Row(
-                    children: [
-                      Visibility(
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: false,
-                        child: FlatButton(
-                            onPressed: () => {Navigator.maybePop(context)},
-                            child: Image(
-                              height: 25.0,
-                              image:
-                                  AssetImage('assets/icons/ArrowLeftPoint.png'),
-                            )),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "sign up",
-                                style: TextStyle(
-                                    fontSize: 30.0, color: Color(0xFF464442)),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        visible: false,
-                        child: FlatButton(
-                          onPressed: () => {},
-                          child: Icon(Icons.arrow_back),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 40.0),
-                  child: Text("create account here",
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          color: Color.fromRGBO(54, 48, 48, 0.5))),
-                ),
-                Container(
-                  padding: EdgeInsets.all(34.0),
+                  child: Expanded(
+                      child: Text(
+                    "sign up",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30.0, color: Color(0xFF464442)),
+                  ))),
+              Container(
+                margin: EdgeInsets.only(top: 40.0),
+                child: Text("create account here",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Color.fromRGBO(54, 48, 48, 0.5))),
+              ),
+              Container(
+                padding: EdgeInsets.all(34.0),
+                child: Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       Container(
                         child: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'first name',
-                              labelStyle: TextStyle(
-                                  fontSize: 15.0,
-                                  color: Color.fromRGBO(54, 48, 48, 0.5))),
-                        ),
-                      ),
-                      Container(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                              labelText: 'last name',
-                              labelStyle: TextStyle(
-                                  fontSize: 15.0,
-                                  color: Color.fromRGBO(54, 48, 48, 0.5))),
-                        ),
-                      ),
-                      Container(
-                        child: TextFormField(
+                          validator: (value) =>
+                              (value.isEmpty) ? "enter an email." : null,
                           controller: emailController,
                           decoration: InputDecoration(
                               labelText: 'email',
@@ -105,6 +59,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child: TextFormField(
+                          validator: (value) => (value.length < 8)
+                              ? "password must be 8+ char long."
+                              : null,
                           obscureText: true,
                           controller: passwordController,
                           decoration: InputDecoration(
@@ -134,9 +91,11 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           onPressed: () {
-                            context.read<AuthService>().signUp(
-                                emailController.text.toString(),
-                                passwordController.text.toString());
+                            if (_formKey.currentState.validate()) {
+                              context.read<AuthService>().signUp(
+                                  emailController.text.toString(),
+                                  passwordController.text.toString());
+                            }
                           },
                           shape: const StadiumBorder(),
                         ),
@@ -152,15 +111,16 @@ class _SignUpState extends State<SignUp> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, '/login');
+                            // Navigator.pushNamed(context, '/login');
+                            widget.updateViews();
                           },
                         ),
                       )
                     ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

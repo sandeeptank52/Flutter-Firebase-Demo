@@ -5,26 +5,31 @@ class AuthService {
 
   AuthService(this._auth);
 
-  Stream<User> get authStateChanges => _auth.authStateChanges();
-
-  Future<void> signOut() async {
-    await _auth.signOut();
+  User _getAuthUser(User user) {
+    return user;
   }
 
-  Future<String> signIn(String email, String password) async {
+  Stream<User> get authStateChanges => _auth.authStateChanges();
+
+  Future signOut() async {
+    return await _auth.signOut();
+  }
+
+  Future signIn(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return "Sign in";
+      var result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return _getAuthUser(result.user);
     } catch (e) {
       return "${e.toString()}";
     }
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future signUp(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return "Sign up";
+      return _getAuthUser(result.user);
     } catch (e) {
       return "${e.toString()}";
     }
