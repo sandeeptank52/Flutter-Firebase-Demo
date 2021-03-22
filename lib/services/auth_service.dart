@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_projects/services/firestore_database_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
@@ -29,6 +30,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      await FireStoreDatabaseService(result.user.uid).updateUserData(email);
       return _getAuthUser(result.user);
     } catch (e) {
       return "${e.toString()}";
