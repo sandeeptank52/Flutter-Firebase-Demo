@@ -15,6 +15,8 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var fNameController = TextEditingController();
+  var lNameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,33 +53,47 @@ class _SignUpState extends State<SignUp> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            Container(
-                              child: TextFormField(
-                                validator: (value) =>
-                                    (value.isEmpty) ? "enter an email." : null,
-                                controller: emailController,
-                                decoration: InputDecoration(
-                                    labelText: 'email',
-                                    labelStyle: TextStyle(
-                                        fontSize: 15.0,
-                                        color:
-                                            Color.fromRGBO(54, 48, 48, 0.5))),
-                              ),
+                            TextFormField(
+                              validator: (value) =>
+                                  (value.isEmpty) ? "enter first name." : null,
+                              controller: fNameController,
+                              decoration: InputDecoration(
+                                  labelText: 'first name',
+                                  labelStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Color.fromRGBO(54, 48, 48, 0.5))),
                             ),
-                            Container(
-                              child: TextFormField(
-                                validator: (value) => (value.length < 8)
-                                    ? "password must be 8+ char long."
-                                    : null,
-                                obscureText: true,
-                                controller: passwordController,
-                                decoration: InputDecoration(
-                                    labelText: 'password',
-                                    labelStyle: TextStyle(
-                                        fontSize: 15.0,
-                                        color:
-                                            Color.fromRGBO(54, 48, 48, 0.5))),
-                              ),
+                            TextFormField(
+                              validator: (value) =>
+                                  (value.isEmpty) ? "enter last name." : null,
+                              controller: lNameController,
+                              decoration: InputDecoration(
+                                  labelText: 'last name',
+                                  labelStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Color.fromRGBO(54, 48, 48, 0.5))),
+                            ),
+                            TextFormField(
+                              validator: (value) =>
+                                  (value.isEmpty) ? "enter an email." : null,
+                              controller: emailController,
+                              decoration: InputDecoration(
+                                  labelText: 'email',
+                                  labelStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Color.fromRGBO(54, 48, 48, 0.5))),
+                            ),
+                            TextFormField(
+                              validator: (value) => (value.length < 8)
+                                  ? "password must be 8+ char long."
+                                  : null,
+                              obscureText: true,
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                  labelText: 'password',
+                                  labelStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Color.fromRGBO(54, 48, 48, 0.5))),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 142.0),
@@ -104,6 +120,8 @@ class _SignUpState extends State<SignUp> {
                                       _isLoading = true;
                                     });
                                     context.read<AuthService>().signUp(
+                                        fNameController.text.toString(),
+                                        lNameController.text.toString(),
                                         emailController.text.toString(),
                                         passwordController.text.toString());
                                   } else {
