@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/services/auth_service.dart';
-import 'package:flutter_projects/shared/loding_view.dart';
+import 'package:flutter_projects/shared/loading_view.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
