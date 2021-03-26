@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/services/auth_service.dart';
+import 'package:flutter_projects/services/firestore_database_service.dart';
 import 'package:flutter_projects/ui/all_news_screen.dart';
 import 'package:flutter_projects/ui/profile_screen.dart';
 import 'package:flutter_projects/ui/sport_news_screen.dart';
@@ -23,31 +25,50 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("news"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.read<AuthService>().signOut();
-            },
-            icon: Icon(Icons.ac_unit),
+    return MultiProvider(
+        providers: [
+          Provider<FireStoreDatabaseService>(
+            create: (_) =>
+                FireStoreDatabaseService(FirebaseAuth.instance.currentUser.uid),
+          ),
+          StreamProvider(
+            create: (context) =>
+            context
+                .read<FireStoreDatabaseService>()
+                .news,
+          ),
+          StreamProvider(
+              create: (context) =>
+              context
+                  .read<FireStoreDatabaseService>()
+                  .sportNews
           )
         ],
-      ),
-      body: _bodyScreens.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.event), title: Text("All News")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.directions_run), title: Text("Sport News")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.supervised_user_circle), title: Text("Profile"))
-        ],
-        onTap: _onTap,
-        currentIndex: _selectedIndex,
-      ),
-    );
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("news"),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.read<AuthService>().signOut();
+                },
+                icon: Icon(Icons.ac_unit),
+              )
+            ],
+          ),
+          body: _bodyScreens.elementAt(_selectedIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.event), label: "All News"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.directions_run), label: "Sport News"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.supervised_user_circle), label: "Profile")
+            ],
+            onTap: _onTap,
+            currentIndex: _selectedIndex,
+          ),
+        ));
   }
 }

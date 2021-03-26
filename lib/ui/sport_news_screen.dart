@@ -1,6 +1,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter_projects/models/news.dart';
+
+import 'news_tile.dart';
 
 class SportsNews extends StatefulWidget {
   @override
@@ -10,10 +15,12 @@ class SportsNews extends StatefulWidget {
 class _SportsNewsState extends State<SportsNews> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text("Sports news"),
-      ),
+    final list = context.watch<List<News>>();
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return NewsTile(list[index]);
+      },
     );
   }
 }

@@ -1,6 +1,6 @@
 class News {
-  String title;
-  String disc;
+  final String title;
+  final String disc;
 
   News(this.title, this.disc);
 }
