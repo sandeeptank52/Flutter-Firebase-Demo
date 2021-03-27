@@ -38,23 +38,15 @@ class _NewsPageState extends State<NewsPage> {
                 .news,
           ),
           StreamProvider(
-              create: (context) =>
-              context
-                  .read<FireStoreDatabaseService>()
-                  .sportNews
+            create: (context) =>
+            context
+                .read<FireStoreDatabaseService>()
+                .sportNews,
           )
         ],
         child: Scaffold(
           appBar: AppBar(
             title: Text("news"),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  context.read<AuthService>().signOut();
-                },
-                icon: Icon(Icons.ac_unit),
-              )
-            ],
           ),
           body: _bodyScreens.elementAt(_selectedIndex),
           bottomNavigationBar: BottomNavigationBar(

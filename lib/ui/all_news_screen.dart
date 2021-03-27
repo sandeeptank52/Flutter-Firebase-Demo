@@ -13,11 +13,19 @@ class _AllNewsState extends State<AllNews> {
   @override
   Widget build(BuildContext context) {
     final list = context.watch<List<News>>();
-    return ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        return NewsTile(list[index]);
-      },
-    );
+    if (list == null || list.length == 0) {
+      return Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.black,
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return NewsTile(list[index].title, list[index].disc);
+        },
+      );
+    }
   }
 }
