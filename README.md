@@ -1,4 +1,10 @@
 # First fluter project
 
-Flutter with firebase.
+A simple Project that shows news from firebase database 
+
+- Firebase
+- dart
+- Flutter
+
+
 
