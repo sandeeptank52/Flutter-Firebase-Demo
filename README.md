@@ -1,4 +1,4 @@
-# First fluter project
+# First flutter project
 
 A simple Project that shows news from firebase database 
 
